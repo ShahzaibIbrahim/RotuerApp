@@ -1,4 +1,5 @@
-import { useParams, Route } from "react-router-dom";
+import { useState } from "react";
+import { useParams, Route, useHistory } from "react-router-dom";
 import Comments from '../components/comments/Comments';
 import HighlightedQuote from '../components/quotes/HighlightedQuote';
 
@@ -9,6 +10,8 @@ const DUMMY_QUOTES = [
 
 const QuoteDetail = () => {
   const params = useParams();
+  const history = useHistory();
+  const [showComment, setShowComment] = useState(false);
 
   const quote = DUMMY_QUOTES.find(quote => quote.id === params.quoteId);
 
@@ -16,9 +19,22 @@ const QuoteDetail = () => {
     return <p>No Quote Found</p>;
   }
 
+  const showCommentHandler = () => {
+    setShowComment(!showComment);
+
+    if(!showComment) {
+      history.push('/quotes/'+ params.quoteId +'/comments');
+    } else {
+      history.push('/quotes/'+ params.quoteId);
+    }
+  }
+
   return (
     <section>
       <HighlightedQuote text={quote.text} author={quote.author}/>
+      <div className="centered">
+        <button className="btn--flat" onClick={showCommentHandler}>{showComment ? 'Hide' : 'Show'}</button>
+      </div>
       <Route path={`/quotes/${params.quoteId}/comments`}>
         <Comments />
       </Route>
