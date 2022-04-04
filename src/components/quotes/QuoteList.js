@@ -1,8 +1,8 @@
-import { Fragment } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Fragment } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 
-import QuoteItem from './QuoteItem';
-import classes from './QuoteList.module.css';
+import QuoteItem from "./QuoteItem";
+import classes from "./QuoteList.module.css";
 
 const sortQuotes = (quotes, ascending) => {
   return quotes.sort((quoteA, quoteB) => {
@@ -20,18 +20,23 @@ const QuoteList = (props) => {
 
   const queryParams = new URLSearchParams(location.search);
 
-  const isSearchingAscending = queryParams.get('sort') === 'asc';
+  const isSearchingAscending = queryParams.get("sort") === "asc";
 
   const sortedQuotes = sortQuotes(props.quotes, isSearchingAscending);
 
   const changeSortingHandler = () => {
-    history.push('/quotes?sort='+ (isSearchingAscending ? 'desc' : 'asc'));
-  }
+    history.push({
+      pathname: location.pathname,
+      search: `?sort=${isSearchingAscending ? "desc" : "asc"}`,
+    });
+  };
 
   return (
     <Fragment>
       <div className={classes.sorting}>
-        <button onClick={changeSortingHandler}>Sort {isSearchingAscending ? 'Descending' : 'Ascending'}</button>
+        <button onClick={changeSortingHandler}>
+          Sort {isSearchingAscending ? "Descending" : "Ascending"}
+        </button>
       </div>
       <ul className={classes.list}>
         {sortedQuotes.map((quote) => (

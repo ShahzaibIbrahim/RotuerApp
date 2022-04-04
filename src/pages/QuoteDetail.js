@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Route, useHistory } from "react-router-dom";
+import { useParams, Route, useHistory, useRouteMatch } from "react-router-dom";
 import Comments from '../components/comments/Comments';
 import HighlightedQuote from '../components/quotes/HighlightedQuote';
 
@@ -9,6 +9,7 @@ const DUMMY_QUOTES = [
 ]
 
 const QuoteDetail = () => {
+  const match = useRouteMatch();
   const params = useParams();
   const history = useHistory();
   const [showComment, setShowComment] = useState(false);
@@ -35,7 +36,7 @@ const QuoteDetail = () => {
       <div className="centered">
         <button className="btn--flat" onClick={showCommentHandler}>{showComment ? 'Hide' : 'Show'}</button>
       </div>
-      <Route path={`/quotes/${params.quoteId}/comments`}>
+      <Route path={`${match.path}/comments`}>
         <Comments />
       </Route>
     </section>
